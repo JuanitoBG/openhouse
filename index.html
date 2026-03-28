@@ -36,6 +36,34 @@ body {
     border-radius: 40px;
 }
 
+.stars-container {
+  position: fixed;
+  inset: 0; 
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.star {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #c2187a;
+      border-radius: 50%;
+      opacity: 0;
+      animation: shoot 2s ease-out forwards;
+    }
+
+@keyframes shoot {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--x), var(--y)) scale(0.5);
+        opacity: 0;
+      }
+    }
 /* Títulos */
 .title-small {
     font-family: 'Great Vibes', cursive;
@@ -173,7 +201,11 @@ body {
 
 <body>
 
+
+
 <div class="card">
+
+    <div class="stars-container"></div>
 
     <div class="border"></div>
 
@@ -228,6 +260,39 @@ body {
     </div>
 
 </div>
+<script>
+window.addEventListener("load", () => {
+    const container = document.querySelector(".stars-container");
+
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    for (let i = 0; i < 200; i++) {
+    const star = document.createElement("div");
+    star.classList.add("star");
+
+    star.style.left = centerX + "px";
+    star.style.top = centerY + "px";
+
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = Math.random() * window.innerWidth;
+
+    const x = Math.cos(angle) * distance;
+    const y = Math.sin(angle) * distance;
+
+    star.style.setProperty("--x", `${x}px`);
+    star.style.setProperty("--y", `${y}px`);
+
+    star.style.animationDelay = `${Math.random() * 0.5}s`;
+
+    container.appendChild(star);
+
+    setTimeout(() => {
+        star.remove();
+    }, 1500);
+    }
+});
+</script>
 
 </body>
 </html>
